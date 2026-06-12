@@ -1,0 +1,10 @@
+$ AWS_PROFILE=octocoptero terraform output
+
+app_source = "https://github.com/1Marc/modern-todomvc-vanillajs.git@58e4669bd959f1b8f8c63a8b2ab6f55173f6104d"
+app_url = "http://18.232.171.154"
+availability_zone = "us-east-1f"
+instance_id = "i-0ebf3a147a1446844"
+instance_state = "running"
+public_ip = "18.232.171.154"
+security_group_id = "sg-0e10187bc2a5ca886"
+selected_ami = "ami-0521cb2d60cfbb1a6"

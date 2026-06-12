@@ -1,0 +1,5 @@
+$ playwright screenshot http://18.232.171.154
+title: Template • TodoMVC
+h1: todos
+todo-rendered: Deploy da TodoMVC via Terraform
+screenshot: docs/images/27-app-browser-screenshot.png

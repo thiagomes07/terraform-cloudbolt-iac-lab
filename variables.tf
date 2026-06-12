@@ -33,3 +33,15 @@ variable "project_name" {
   description = "Project tag used to find all resources created by this activity."
   default     = "terraform-cloudbolt-iac-lab"
 }
+
+variable "app_repo_url" {
+  type        = string
+  description = "Public GitHub repository cloned into the EC2 instance."
+  default     = "https://github.com/1Marc/modern-todomvc-vanillajs.git"
+}
+
+variable "app_repo_ref" {
+  type        = string
+  description = "Pinned Git reference used to deploy the sample application."
+  default     = "58e4669bd959f1b8f8c63a8b2ab6f55173f6104d"
+}

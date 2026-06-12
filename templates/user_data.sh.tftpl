@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euxo pipefail
+
+APP_DIR="/var/www/todomvc"
+NGINX_ROOT="/usr/share/nginx/html"
+
+dnf update -y
+dnf install -y git nginx
+
+rm -rf "$APP_DIR"
+git clone "${app_repo_url}" "$APP_DIR"
+cd "$APP_DIR"
+git checkout "${app_repo_ref}"
+
+rm -rf "$NGINX_ROOT"/*
+cp -a "$APP_DIR"/. "$NGINX_ROOT"/
+
+systemctl enable nginx
+systemctl restart nginx

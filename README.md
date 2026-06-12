@@ -10,11 +10,12 @@ O objetivo foi provisionar uma instância EC2 por código, validar o ciclo `init
 | --- | --- |
 | Cloud | AWS |
 | Região | `us-east-1` |
-| Recurso principal | EC2 `aws_instance.my_vm` |
+| Recursos principais | EC2 `aws_instance.my_vm` e Security Group `aws_security_group.web` |
 | Tipo da instância | `t3.micro` |
 | AMI | Amazon Linux 2023 selecionada dinamicamente |
+| Aplicação publicada | [modern-todomvc-vanillajs](https://github.com/1Marc/modern-todomvc-vanillajs) |
 | Gerenciamento | Terraform local state |
-| Status final | Instância destruída após as evidências para evitar custo |
+| Status final | EC2 e Security Group destruídos após as evidências para evitar custo |
 
 O tutorial usa uma AMI fixa e `t2.micro`. Mantive a mesma ideia central, mas fiz dois ajustes: usei uma busca dinâmica da AMI para evitar ID obsoleto e troquei para `t3.micro`, que era o tipo elegível ao Free Tier nesta conta no momento da execução.
 
@@ -30,20 +31,45 @@ O tutorial usa uma AMI fixa e `t2.micro`. Mantive a mesma ideia central, mas fiz
 ├── docs
 │   ├── evidence
 │   └── images
-└── scripts
-    └── render_terminal_screenshots.py
+├── scripts
+│   └── render_terminal_screenshots.py
+└── templates
+    └── user_data.sh.tftpl
 ```
 
 Os arquivos `.tfstate`, planos locais e cache `.terraform/` não entram no Git, porque carregam estado local da execução e podem expor detalhes desnecessários da conta.
 
 ## Código Criado
 
-O `provider.tf` define a AWS como provider, a região por variável e tags padrão para todos os recursos. No `main.tf`, a AMI é buscada com `data "aws_ami"` e a instância EC2 é criada com tags claras de projeto, dono e ferramenta.
+O `provider.tf` define a AWS como provider, a região por variável e tags padrão para todos os recursos. No `main.tf`, a AMI é buscada com `data "aws_ami"`, a instância EC2 é criada com tags claras e um Security Group libera HTTP na porta `80`.
+
+O deploy da aplicação fica em `templates/user_data.sh.tftpl`: quando a EC2 inicializa, ela instala Nginx/Git, clona o repositório público da TodoMVC e copia os arquivos para o diretório padrão do Nginx.
 
 ```hcl
+resource "aws_security_group" "web" {
+  name_prefix = "${var.project_name}-web-"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    description = "HTTP from the internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "my_vm" {
-  ami           = coalesce(var.ami_id, data.aws_ami.amazon_linux.id)
-  instance_type = var.instance_type
+  ami                         = coalesce(var.ami_id, data.aws_ami.amazon_linux.id)
+  instance_type               = var.instance_type
+  subnet_id                   = sort(data.aws_subnets.default.ids)[0]
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.web.id]
+  user_data_replace_on_change = true
+  user_data = templatefile("${path.module}/templates/user_data.sh.tftpl", {
+    app_repo_url = var.app_repo_url
+    app_repo_ref = var.app_repo_ref
+  })
 
   tags = {
     Hello     = "World"
@@ -95,7 +121,7 @@ Também conferi o state local para confirmar que o Terraform passou a conhecer a
 
 ## Itens Provisionados na Nuvem
 
-O recurso provisionado foi uma instância EC2 em `us-east-1`, criada e gerenciada pelo bloco `aws_instance.my_vm`.
+Na primeira execução, seguindo o tutorial original, o recurso principal provisionado foi uma EC2 em `us-east-1`, criada e gerenciada pelo bloco `aws_instance.my_vm`.
 
 | Recurso provisionado | Identificação | Finalidade |
 | --- | --- | --- |
@@ -106,6 +132,44 @@ A instância foi criada com AMI Amazon Linux 2023 selecionada automaticamente pe
 Evidência da instância criada na AWS:
 
 ![AWS EC2 created](docs/images/10-aws-ec2-created.png)
+
+Na evolução da atividade, o Terraform passou a criar também um Security Group HTTP para publicar uma aplicação web real:
+
+| Recurso provisionado | Identificação | Finalidade |
+| --- | --- | --- |
+| EC2 | `terraform-cloudbolt-lab-ec2` | Hospedar Nginx e servir a TodoMVC |
+| Security Group | `terraform-cloudbolt-iac-lab-web-*` | Liberar acesso HTTP na porta `80` |
+
+![AWS app resources](docs/images/25-app-aws-resources.png)
+
+## Deploy de Aplicação
+
+Para deixar o laboratório menos abstrato, publiquei uma aplicação real em vez de uma página escrita do zero. A escolhida foi a [TodoMVC em JavaScript puro](https://github.com/1Marc/modern-todomvc-vanillajs), porque é pequena, visual e não exige build. O commit usado foi fixado em variável para manter reprodutibilidade:
+
+```hcl
+app_repo_url = "https://github.com/1Marc/modern-todomvc-vanillajs.git"
+app_repo_ref = "58e4669bd959f1b8f8c63a8b2ab6f55173f6104d"
+```
+
+O novo plano passou a criar dois recursos: EC2 e Security Group.
+
+![App terraform plan](docs/images/22-app-terraform-plan.png)
+
+Após o `apply`, o Terraform retornou a URL pública da aplicação.
+
+![App terraform apply](docs/images/23-app-terraform-apply.png)
+
+![App terraform output](docs/images/24-app-terraform-output.png)
+
+Validei primeiro por HTTP, confirmando que o HTML servido vinha da TodoMVC clonada do GitHub.
+
+![HTTP check](docs/images/26-app-http-check.png)
+
+Depois fiz a conferência visual no navegador com Playwright, inclusive inserindo uma tarefa para provar que a interface carregou e executou JavaScript.
+
+![Browser check](docs/images/27-app-browser-check.png)
+
+![TodoMVC deployed](docs/images/27-app-browser-screenshot.png)
 
 ## State, Perda de State e Import
 
@@ -155,6 +219,14 @@ Confirmei em seguida que a instância ficou com estado `terminated`.
 
 ![AWS EC2 terminated](docs/images/21-aws-ec2-terminated.png)
 
+Depois da evolução com aplicação publicada, executei o `destroy` novamente. Dessa vez o Terraform removeu tanto a EC2 quanto o Security Group.
+
+![App terraform destroy](docs/images/28-app-terraform-destroy.png)
+
+Na verificação final, a EC2 aparece como `terminated` e o Security Group já não existe mais.
+
+![App cleanup check](docs/images/29-app-aws-cleanup-check.png)
+
 ## Como Reproduzir
 
 Com um profile AWS configurado:
@@ -166,6 +238,7 @@ terraform fmt -check -recursive
 terraform validate
 terraform plan -out=tfplan
 terraform apply tfplan
+curl --retry 30 --retry-all-errors --retry-delay 5 "$(terraform output -raw app_url)"
 terraform destroy
 ```
 
@@ -173,4 +246,4 @@ terraform destroy
 
 Terraform não só cria infraestrutura: ele guarda a relação entre o código e o recurso real no state. Quando o state some, o recurso ainda existe na AWS, mas o Terraform perde o mapa. O `import` resolve essa ligação, mas não escreve o HCL por nós. Por isso, a configuração precisa continuar representando fielmente o que deve existir na nuvem.
 
-Essa foi a principal diferença entre apenas "subir uma EC2" e realmente entender o fluxo de IaC.
+Publicar uma aplicação deixou esse ponto mais concreto: a EC2 deixou de ser só um recurso criado e passou a ser um ambiente funcional, com rede, bootstrap e código externo versionado.

@@ -1,0 +1,22 @@
+$ aws ec2 describe resources for EC2 i-0ebf3a147a1446844 and SG sg-0e10187bc2a5ca886
+
+---------------------------------------------------
+|                DescribeInstances                |
++-----------------+-------------------------------+
+|  InstanceId     |  i-0ebf3a147a1446844          |
+|  Name           |  terraform-cloudbolt-lab-ec2  |
+|  Project        |  terraform-cloudbolt-iac-lab  |
+|  PublicIp       |  18.232.171.154               |
+|  SecurityGroups |  sg-0e10187bc2a5ca886         |
+|  State          |  running                      |
+|  Type           |  t3.micro                     |
++-----------------+-------------------------------+
+-----------------------------------------------------------------------------
+|                          DescribeSecurityGroups                           |
++-----------+---------------------------------------------------------------+
+|  Cidr     |  0.0.0.0/0                                                    |
+|  GroupId  |  sg-0e10187bc2a5ca886                                         |
+|  GroupName|  terraform-cloudbolt-iac-lab-web-20260612235033258200000001   |
+|  Ingress  |  80                                                           |
+|  VpcId    |  vpc-05af7916f6a1748b7                                        |
++-----------+---------------------------------------------------------------+

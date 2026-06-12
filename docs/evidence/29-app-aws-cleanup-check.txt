@@ -1,0 +1,11 @@
+$ aws ec2 cleanup verification after terraform destroy
+
+----------------------------------------------------------------------
+|                          DescribeInstances                         |
++----------------------+-------------------------------+-------------+
+|      InstanceId      |             Name              |    State    |
++----------------------+-------------------------------+-------------+
+|  i-0ebf3a147a1446844 |  terraform-cloudbolt-lab-ec2  |  terminated |
++----------------------+-------------------------------+-------------+
+
+Security group sg-0e10187bc2a5ca886 not found after destroy, as expected.
