@@ -1,0 +1,3 @@
+$ terraform fmt -check -recursive
+
+Terraform files are formatted.

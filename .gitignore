@@ -1,0 +1,19 @@
+.DS_Store
+
+# Terraform local cache and runtime files
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local-only lab artifacts
+docs/evidence/state-backup/
+docs/evidence/*.tmp
+

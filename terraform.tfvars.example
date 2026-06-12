@@ -1,0 +1,4 @@
+region        = "us-east-1"
+instance_type = "t3.micro"
+instance_name = "terraform-cloudbolt-lab-ec2"
+project_name  = "terraform-cloudbolt-iac-lab"

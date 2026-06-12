@@ -1,0 +1,21 @@
+$ mkdir -p docs/evidence/state-backup && mv terraform.tfstate* docs/evidence/state-backup/
+
+total 24
+drwxr-xr-x@  3 thiagasso  staff    96 Jun 12 20:25 .
+drwxr-xr-x@ 16 thiagasso  staff   512 Jun 12 20:25 ..
+-rw-r--r--@  1 thiagasso  staff  9399 Jun 12 20:24 terraform.tfstate
+total 72
+drwxr-xr-x@ 14 thiagasso  staff   448 Jun 12 20:25 .
+drwxr-xr-x  12 thiagasso  staff   384 Jun 12 20:21 ..
+drwxr-xr-x@  9 thiagasso  staff   288 Jun 12 20:24 .git
+-rw-r--r--@  1 thiagasso  staff   264 Jun 12 20:22 .gitignore
+drwxr-xr-x@  3 thiagasso  staff    96 Jun 12 20:23 .terraform
+-rw-r--r--@  1 thiagasso  staff  1407 Jun 12 20:23 .terraform.lock.hcl
+drwxr-xr-x@  4 thiagasso  staff   128 Jun 12 20:21 docs
+-rw-r--r--@  1 thiagasso  staff   586 Jun 12 20:22 main.tf
+-rw-r--r--@  1 thiagasso  staff   682 Jun 12 20:22 outputs.tf
+-rw-r--r--@  1 thiagasso  staff   357 Jun 12 20:22 provider.tf
+drwxr-xr-x@  3 thiagasso  staff    96 Jun 12 20:22 scripts
+-rw-r--r--@  1 thiagasso  staff   147 Jun 12 20:23 terraform.tfvars.example
+-rw-r--r--@  1 thiagasso  staff  5686 Jun 12 20:24 tfplan
+-rw-r--r--@  1 thiagasso  staff   960 Jun 12 20:23 variables.tf

@@ -1,0 +1,16 @@
+$ aws ec2 describe-tags --profile octocoptero --region us-east-1 --filters Name=resource-id,Values=i-04575ebf4dad33c44
+
+----------------------------------------------------------------------
+|                            DescribeTags                            |
++------------+-----------------------+-------------------------------+
+|     Key    |      ResourceId       |             Value             |
++------------+-----------------------+-------------------------------+
+|  Course    |  i-04575ebf4dad33c44  |  Engenharia de Software       |
+|  Hello     |  i-04575ebf4dad33c44  |  World                        |
+|  IaCTool   |  i-04575ebf4dad33c44  |  Terraform                    |
+|  ManagedBy |  i-04575ebf4dad33c44  |  Terraform                    |
+|  Name      |  i-04575ebf4dad33c44  |  terraform-cloudbolt-lab-ec2  |
+|  Owner     |  i-04575ebf4dad33c44  |  Thiago Gomes                 |
+|  Project   |  i-04575ebf4dad33c44  |  terraform-cloudbolt-iac-lab  |
+|  Repository|  i-04575ebf4dad33c44  |  terraform-cloudbolt-iac-lab  |
++------------+-----------------------+-------------------------------+

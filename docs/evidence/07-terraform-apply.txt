@@ -1,0 +1,15 @@
+$ AWS_PROFILE=octocoptero terraform apply -auto-approve tfplan
+
+[0m[1maws_instance.my_vm: Creating...[0m[0m
+[0m[1maws_instance.my_vm: Still creating... [10s elapsed][0m[0m
+[0m[1maws_instance.my_vm: Creation complete after 15s [id=i-04575ebf4dad33c44][0m
+[0m[1m[32m
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mavailability_zone = "us-east-1c"
+instance_id = "i-04575ebf4dad33c44"
+instance_state = "running"
+public_ip = "100.26.131.70"
+selected_ami = "ami-0521cb2d60cfbb1a6"

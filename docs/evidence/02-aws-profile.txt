@@ -1,0 +1,7 @@
+$ aws configure list --profile octocoptero
+
+NAME       : VALUE                    : TYPE             : LOCATION
+profile    : octocoptero              : manual           : --profile
+access_key : ****************     : shared-credentials-file : 
+secret_key : ****************     : shared-credentials-file : 
+region     : us-east-1                : config-file      : ~/.aws/config

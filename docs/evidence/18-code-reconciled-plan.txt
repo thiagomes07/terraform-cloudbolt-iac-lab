@@ -1,0 +1,12 @@
+$ terraform fmt -recursive && AWS_PROFILE=octocoptero terraform validate && AWS_PROFILE=octocoptero terraform plan
+
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+[0m[1mdata.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mdata.aws_ami.amazon_linux: Read complete after 1s [id=ami-0521cb2d60cfbb1a6][0m
+[0m[1maws_instance.my_vm: Refreshing state... [id=i-04575ebf4dad33c44][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

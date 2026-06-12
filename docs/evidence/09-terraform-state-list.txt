@@ -1,0 +1,4 @@
+$ AWS_PROFILE=octocoptero terraform state list
+
+data.aws_ami.amazon_linux
+aws_instance.my_vm

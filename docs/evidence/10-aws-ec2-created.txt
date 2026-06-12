@@ -1,0 +1,14 @@
+$ aws ec2 describe-instances --profile octocoptero --region us-east-1 --instance-ids i-04575ebf4dad33c44
+
+-----------------------------------------------
+|              DescribeInstances              |
++-------------+-------------------------------+
+|  AMI        |  ami-0521cb2d60cfbb1a6        |
+|  AZ         |  us-east-1c                   |
+|  InstanceId |  i-04575ebf4dad33c44          |
+|  ManagedBy  |  Terraform                    |
+|  Name       |  terraform-cloudbolt-lab-ec2  |
+|  Project    |  terraform-cloudbolt-iac-lab  |
+|  State      |  running                      |
+|  Type       |  t3.micro                     |
++-------------+-------------------------------+

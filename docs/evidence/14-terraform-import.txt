@@ -1,0 +1,14 @@
+$ AWS_PROFILE=octocoptero terraform import aws_instance.my_vm i-04575ebf4dad33c44
+
+[0m[1mdata.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mdata.aws_ami.amazon_linux: Read complete after 1s [id=ami-0521cb2d60cfbb1a6][0m
+[0m[1maws_instance.my_vm: Importing from ID "i-04575ebf4dad33c44"...[0m
+[0m[1m[32maws_instance.my_vm: Import prepared![0m
+[0m[32m  Prepared aws_instance for import[0m
+[0m[1maws_instance.my_vm: Refreshing state... [id=i-04575ebf4dad33c44][0m
+[0m[32m
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+[0m
